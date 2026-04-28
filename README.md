@@ -24,7 +24,7 @@ A simple backend REST API for managing tasks, built with FastAPI and PostgreSQL.
 
 
 ## Project Structure
-
+```text
 task-manager-api/
 ├── app/
 │   ├── main.py
@@ -36,20 +36,24 @@ task-manager-api/
 │   │   └── tasks.py
 │   └── services/
 │       └── task_service.py
-
+│
+│── requirements.txt
+│── .gitignore
+│── README.md
+```
 
 ## Installation
-
+```bash
 pip install -r requirements.txt
-
+```
 
 ## Run the Server
-
+```bash
 uvicorn app.main:app --reload
-
+```
 
 ## API Endpoints
-
+```text
 | Method | Endpoint    | Description     |
 | ------ | ----------- | --------------- |
 | POST   | /tasks      | Create task     |
@@ -57,16 +61,16 @@ uvicorn app.main:app --reload
 | GET    | /tasks/{id} | Get single task |
 | PUT    | /tasks/{id} | Update task     |
 | DELETE | /tasks/{id} | Delete task     |
-
+```
 
 ## Future Improvements
 
-User authentication
-Task priority levels
-Due dates
-Docker support
-Unit testing
-Author
+- User authentication
+- Task priority levels
+- Due dates
+- Docker support
+- Unit testing
+- Author
 
 
 ## Author
