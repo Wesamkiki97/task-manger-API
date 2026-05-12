@@ -14,9 +14,8 @@ def deco_start_close_DB(fun):
 #start the backend logic here 
 @deco_start_close_DB
 def create_task(session ,task):
-    #session = SessionLocal() #start connect with DB
-
-    new_task = Task( #trans from JOS FASTAPI to DB 
+    #trans from JOS FASTAPI to DB 
+    new_task = Task( 
         title = task.title,
         completed= task.completed
     )
@@ -29,20 +28,20 @@ def create_task(session ,task):
     return new_task #return to endpoint as JSON
 
 
-@deco_start_close_DB
-def get_all_tasks(session):
-    #session = SessionLocal() #start connect with DB
-    return session.query(Task).all() #return to endpoint as JSON
-
 
 @deco_start_close_DB  
 def get_task_by_id(session,task_id):
-    #session = SessionLocal()#start connect with DB
     return session.query(Task).filter(Task.id == task_id).first() #return to endpoint as JSON from the DB the first item has same ID Vule
+
+#in case completed = None this function will return all tasks 
+@deco_start_close_DB
+def get_tasks_by_completed(session,completed:bool):
+    if completed == None:
+        return session.query(Task).all() #return to endpoint as JSON
+    return session.query(Task).filter(Task.completed == completed).all()
 
 @deco_start_close_DB    
 def delete_task(session,task_id):
-    #session = SessionLocal()#start connect with DB
     task= session.query(Task).filter(Task.id == task_id).first()
     if not task: #check if there is task with this ID or no
      return False
@@ -52,7 +51,6 @@ def delete_task(session,task_id):
 
 @deco_start_close_DB
 def update_task(session,task_id, updated_task):
-      #session = SessionLocal()#start connect with DB
       task= session.query(Task).filter(Task.id == task_id).first()
       if not task:
        return False

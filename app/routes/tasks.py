@@ -9,13 +9,18 @@ def create_task(task:TaskCreate): #function of this endpoint task attribute with
     return task_service.create_task(task) #call the create_task endpoint from task_service from service.py with task parameter 
 
 
-@router.get("/tasks",response_model=list[TaskResponse])#HTTP end point (( response_model=TaskResponse before display the value we send it to pydantic library for validate)
-def get_all_tasks():#Function calling
-    return task_service.get_all_tasks() #call get_all_task function from task_service from service.py
-
+#get by ID
 @router.get("/tasks/{task_id}",response_model=TaskResponse) #Http URL with parameter endpoint ( response_model=TaskResponse before display the value we send it to pydantic library for validate)
 def get_task_by_ID(task_id:int):#Function calling
     task = task_service.get_task_by_id(task_id) #call get_task_by_ID function from task_service from service.py
+    if not task:#this endpoint will return value if has the value of task_id parameter or no
+        raise HTTPException(status_code=404, detail="Task Not Found")#massage if not has and handle this exception
+    return task #return the task if has this ID
+
+#get by completed of not completed
+@router.get("/tasks",response_model=list[TaskResponse]) #Http URL with parameter endpoint ( response_model=TaskResponse before display the value we send it to pydantic library for validate)
+def get_task_by_complete(completed:bool | None = None):#Function calling
+    task = task_service.get_tasks_by_completed(completed) #call get_task_by_ID function from task_service from service.py
     if not task:#this endpoint will return value if has the value of task_id parameter or no
         raise HTTPException(status_code=404, detail="Task Not Found")#massage if not has and handle this exception
     return task #return the task if has this ID
